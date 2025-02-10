@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "KaljappSelenium": {
+      "commandName": "Project",
+      "commandLineArgs": "http://localhost:4200",
+      "environmentVariables": {
+        "test": "123456"
+      }
+    }
+  }
+}
