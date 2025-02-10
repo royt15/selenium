@@ -1,20 +1,26 @@
-﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-
-
+﻿/*
+ * Selenium C# for Kaljapp
+ * Just trying out Selenium and C#...
+ * 
+ * See Test files for actual tests
+ * 
+ */
 internal class Program
 {
+
     private static void Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
-
-        IWebDriver chromeDriver = new ChromeDriver();
-        string url = "https://www.google.fi";
-        chromeDriver.Navigate().GoToUrl(url);
-        string title = chromeDriver.Title;
-        Console.WriteLine($"{url} title is: ${title}");
-        Console.In.ReadLine();
-
+        Console.WriteLine("Hello!");
+        PrintArgs(args);
     }
-}
 
+    private static void PrintArgs(string[] args)
+    {
+        Console.WriteLine("Command line args: " + args.Length);
+        foreach (var item in args)
+        {
+            Console.WriteLine($"\t{item}");
+        }
+    }
+
+}
