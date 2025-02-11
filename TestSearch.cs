@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
 
 namespace KaljappSelenium
 {
@@ -11,8 +12,9 @@ namespace KaljappSelenium
         protected IWebDriver? driver;
         private const string url = "http://localhost:4200";
 
-        // Elements
-        private readonly By searchInput = By.XPath("//input[@name='q']");
+        // Locators
+        IWebElement SearchInput => driver.FindElement(By.XPath("//input[@name='q']"));
+        IWebElement SearchResults => driver.FindElement(By.XPath("//div[contains(@class, 'results')]"));
 
 
         [OneTimeSetUp]
@@ -29,8 +31,7 @@ namespace KaljappSelenium
         [Test]
         public void TestSearchIsVisible()
         {
-            IWebElement el = driver.FindElement(searchInput);
-            Assert.That(el.Displayed);
+            Assert.That(SearchInput.Displayed);
         }
 
         [Test]
@@ -43,13 +44,37 @@ namespace KaljappSelenium
         [Test]
         public void TestSearchQueryCanBeWritten()
         {
-            const string q = "Bar Tentti"; 
-            IWebElement el = driver.FindElement(searchInput);
-            el.SendKeys(q);
+            const string q = "Bar Tentti";
+            SearchInput.SendKeys(q);
 
             // Legacy code would be ClassicAssert.AreEqual(...)
             // https://docs.nunit.org/articles/nunit/writing-tests/assertions/assertions.html#two-models
-            Assert.That(el.GetAttribute("value"), Is.EqualTo(q));
+            Assert.That(SearchInput.GetAttribute("value"), Is.EqualTo(q));
+
+        }
+
+        [Test]
+        public void TestThatResultsAppear()
+        {
+            const string q = "Bar";
+            const int maxTimeMs = 2500; 
+
+            SearchInput.Clear();
+            SearchInput.SendKeys(q);
+
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromMilliseconds(maxTimeMs));
+            
+            wait.Until((driver) => SearchResults);
+            
+            if(SearchResults.Displayed) { 
+                // Get results
+                List<IWebElement> res = SearchResults.FindElements(By.ClassName("result")).ToList();
+                Assert.That(res.Count() >= 3);
+            } 
+            else
+            {
+                Assert.Fail();
+            }
 
         }
 
