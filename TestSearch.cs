@@ -20,7 +20,7 @@ namespace KaljappSelenium
         [OneTimeSetUp]
         public void SetUp()
         {
-            driver = new ChromeDriver(GetChromeOptions());
+            driver = new ChromeDriver(TestUtils.GetChromeOptions());
             driver.Manage().Timeouts().ImplicitWait = new System.TimeSpan(1);
 
             // Initial navigation
@@ -53,6 +53,7 @@ namespace KaljappSelenium
 
         }
 
+     
         [Test]
         public void TestThatResultsAppear()
         {
@@ -86,14 +87,7 @@ namespace KaljappSelenium
         }
 
 
-        private static ChromeOptions GetChromeOptions()
-        {
-            var options = new ChromeOptions();
-            options.AddArgument("--window-size=860,1024");
-            options.AddArgument("--start-maximized");
-            //options.AddArgument("--headless");
-            return options;
-        }
+
 
     }
 }
