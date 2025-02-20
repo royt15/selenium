@@ -1,7 +1,10 @@
-﻿using NUnit.Framework;
+﻿using Newtonsoft.Json.Bson;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Interactions;
+using OpenQA.Selenium.Support.Extensions;
+using OpenQA.Selenium.Support.UI;
 
 namespace KaljappSelenium
 {
@@ -9,12 +12,10 @@ namespace KaljappSelenium
     internal class TestMap
     {
 
-        protected IWebDriver? driver;
+        protected IWebDriver driver;
 
         private IWebElement mapEl => driver.FindElement(By.Id("map"));
 
-        // TODO: get from some file or something
-        private const string url = "http://localhost:4200";
 
         [OneTimeSetUp]
         public void SetUp()
@@ -23,7 +24,7 @@ namespace KaljappSelenium
             driver.Manage().Timeouts().ImplicitWait = new System.TimeSpan(1);
 
             // Initial navigation
-            driver.Navigate().GoToUrl(url);
+            driver.Navigate().GoToUrl(TestUtils.testUrl);
         }
 
 
@@ -83,9 +84,11 @@ namespace KaljappSelenium
             }
 
         }
+
         [OneTimeTearDown]
         public void TearDown() {
-            TestUtils.TearDownDriver(ref driver!);
+            driver.Quit();
+            driver.Dispose();
         }
 
 
