@@ -55,6 +55,34 @@ namespace KaljappSelenium
 
         }
 
+        [Test]
+        public void TestMarkerClick()
+        {
+            
+            Actions actions = new Actions(driver);
+
+            try
+            {
+                driver.Navigate().GoToUrl(TestUtils.testUrl + "/map?lat=60.1645023&long=24.94434267282");
+
+                // Wait markers to load, Pick any marker
+                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromMilliseconds(5000));
+                var marker = wait.Until((driver) => driver.FindElement(By.CssSelector("img.leaflet-marker-icon")));
+
+                actions.Click(marker).Perform();
+
+                IWebElement infoPopup = driver.FindElement(By.ClassName("bar-info-popup"));
+                
+                Assert.That(infoPopup.Displayed);
+                Assert.That(infoPopup.Size.Width >= 480); // px
+                Assert.That(infoPopup.Size.Height > 0); // px
+
+            } catch (NoSuchElementException e)
+            {
+                Assert.Fail(e.ToString());
+            }
+
+        }
         [OneTimeTearDown]
         public void TearDown() {
             TestUtils.TearDownDriver(ref driver!);
