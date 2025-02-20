@@ -11,7 +11,8 @@ namespace KaljappSelenium
     internal static class TestUtils
     {
 
-            
+        // Todo: do not hard code
+        public static string testUrl => "http://localhost:4200"; 
 
         public static ChromeOptions GetChromeOptions()
         {
@@ -25,7 +26,6 @@ namespace KaljappSelenium
 
         public static void TearDownDriver(ref IWebDriver d)
         {
-            d.Quit();
             d.Dispose();
         }
 
